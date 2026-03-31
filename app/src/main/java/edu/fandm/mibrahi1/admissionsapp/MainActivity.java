@@ -24,10 +24,8 @@ public class MainActivity extends AppCompatActivity {
         });
         Button startTour = (Button) findViewById(R.id.btnStartTour);
         startTour.setOnClickListener(v -> {
-            NavigationHelper.startActivity(this, MainActivity.class);
-
+            NavigationHelper.startActivity(this, MapActivity.class);
         });
-
 
         Button bookVisit = (Button) findViewById(R.id.btnBookVisit);
         bookVisit.setOnClickListener(v -> {
