@@ -39,6 +39,7 @@ public class AdmissionCounselor extends AppCompatActivity {
 
         // Default to international
         actvLocation.setAdapter(countryAdapter);
+        rgStudentType.check(R.id.rbInternational);
 
         rgStudentType.setOnCheckedChangeListener((group, checkedId) -> {
             actvLocation.setText("");

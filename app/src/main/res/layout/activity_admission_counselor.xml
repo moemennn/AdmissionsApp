@@ -5,6 +5,7 @@
     android:id="@+id/admissionCounselorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/appBackground"
     tools:context=".MainActivity">
 
     <!-- Yellow Section: Radio Group -->
@@ -12,39 +13,40 @@
         android:id="@+id/rgStudentType"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#FFFF00"
-        android:padding="16dp"
-        android:layout_marginTop="60dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="32dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:background="@android:color/transparent"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@id/actvLocation"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/actvLocation">
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Are you:"
-            android:textSize="18sp"
-            android:textColor="#000000"
-            android:paddingBottom="8dp" />
+            android:paddingBottom="8dp"
+            android:text="Are you an:"
+            android:textColor="@color/subTextColor"
+            android:textSize="36sp" />
 
         <RadioButton
             android:id="@+id/rbInternational"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="International student"
-            android:textSize="16sp"
-            android:textColor="#000000" />
+            android:textColor="@color/subTextColor"
+            android:textSize="28sp" />
 
         <RadioButton
             android:id="@+id/rbFromUS"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="From US"
-            android:textSize="16sp"
-            android:textColor="#000000" />
+            android:text="From the US"
+            android:textColor="@color/subTextColor"
+            android:textSize="28sp" />
 
     </RadioGroup>
 
@@ -53,12 +55,14 @@
         android:id="@+id/actvLocation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#FF0000"
+        android:background="@drawable/border_background"
         android:padding="16dp"
-        android:textSize="16sp"
-        android:textColor="#FFFFFF"
-        android:hint="Enter country (if international)"
-        android:textColorHint="#DDDDDD"
+        android:textSize="28sp"
+        android:textColor="#050505"
+        android:hint="Enter country"
+        android:textColorHint="@color/promptTextColor"
+        android:maxLines="1"
+        android:inputType="text"
         android:completionThreshold="1"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
@@ -68,23 +72,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btnSubmit" />
 
-    <!-- Cyan Submit Button -->
+    <!-- Submit Button -->
     <Button
         android:id="@+id/btnSubmit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Submit"
-        android:textSize="22sp"
-        android:textColor="#000000"
-        android:backgroundTint="#00FFFF"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="60dp"
+        android:backgroundTint="@color/buttonColor"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="60dp"
+        android:text="Submit"
+        android:textColor="@color/buttonTextColor"
+        android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/actvLocation" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

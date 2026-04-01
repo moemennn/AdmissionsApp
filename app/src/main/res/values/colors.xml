@@ -2,4 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="buttonColor">#C8972B</color>
+    <color name="appBackground">#003DA5</color>
+    <color name="mainTextColor">#F0F4FA</color>
+    <color name="buttonTextColor">#000000</color>
+    <color name="subTextColor">#F6F6A5</color>
+    <color name="promptTextColor">#E9DFC8</color>
 </resources>
