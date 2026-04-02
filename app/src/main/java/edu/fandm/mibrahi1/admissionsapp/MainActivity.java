@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         Button startTour = (Button) findViewById(R.id.btnStartTour);
         startTour.setOnClickListener(v -> {
             NavigationHelper.startActivity(this, MapActivity.class);
