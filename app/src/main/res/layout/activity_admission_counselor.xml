@@ -60,7 +60,7 @@
         android:background="@drawable/border_background"
         android:padding="16dp"
         android:textSize="28sp"
-        android:textColor="#050505"
+        android:textColor="@color/mainTextColor"
         android:hint="Enter country"
         android:textColorHint="@color/promptTextColor"
         android:maxLines="1"
