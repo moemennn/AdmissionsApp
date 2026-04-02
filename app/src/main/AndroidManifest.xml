@@ -17,6 +17,7 @@
             android:name=".ContactInfo"
             android:exported="false" />
 
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDFEkmlETPPr_Ss6uupfyQKpMr3EYREoQU" />
