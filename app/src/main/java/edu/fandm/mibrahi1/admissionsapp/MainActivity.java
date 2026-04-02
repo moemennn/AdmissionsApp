@@ -36,5 +36,10 @@ public class MainActivity extends AppCompatActivity {
         meetCounselor.setOnClickListener(v -> {
             NavigationHelper.startActivity(this, AdmissionCounselor.class);
         });
+
+        Button contact = (Button) findViewById(R.id.btnContactInfo);
+        contact.setOnClickListener(v -> {
+            NavigationHelper.startActivity(this, ContactInfo.class);
+        });
     }
 }
