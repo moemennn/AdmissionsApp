@@ -7,7 +7,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -31,15 +33,57 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap map) {
-        LatLng fandm = new LatLng(40.0370, -76.3055);
+        map.getUiSettings().setScrollGesturesEnabled(true);
+        map.getUiSettings().setZoomGesturesEnabled(true);
+        map.getUiSettings().setTiltGesturesEnabled(true);
+        map.getUiSettings().setRotateGesturesEnabled(true);
 
-        // Lombardo Welcome Center marker
+        // Lock camera to F&M campus area
+        LatLngBounds fandmBounds = new LatLngBounds(
+                new LatLng(40.0460, -76.3250), // Southwest corner
+                new LatLng(40.0570, -76.3100)  // Northeast corner
+        );
+        map.setLatLngBoundsForCameraTarget(fandmBounds);
+        map.setMinZoomPreference(14f);
+
+        // Lombardo Welcome Center - GREEN (start here)
         map.addMarker(new MarkerOptions()
-                .position(new LatLng(40.0385, -76.3061))
+                .position(new LatLng(40.0513665, -76.3196468))
                 .title("Lombardo Welcome Center")
-                .snippet("Start your visit here — parking available"));
+                .snippet("Admissions & Financial Aid")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(fandm, 16f));
+        // Old Main - BLUE (administrative)
+        map.addMarker(new MarkerOptions()
+                .position(new LatLng(40.0453004, -76.3201826))
+                .title("Old Main")
+                .snippet("Administrative Offices")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+
+        // Shadek-Fackenthal Library - YELLOW (academic)
+        map.addMarker(new MarkerOptions()
+                .position(new LatLng(40.0446706, -76.3197777))
+                .title("Shadek-Fackenthal Library")
+                .snippet("Main Campus Library")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+
+        // Steinman College Center - ORANGE (student life)
+        map.addMarker(new MarkerOptions()
+                .position(new LatLng(40.0473887, -76.3195619))
+                .title("Steinman College Center")
+                .snippet("Student hub, dining, Phillips Museum")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+
+        // Alumni Sports & Fitness Center - MAGENTA (athletics)
+        map.addMarker(new MarkerOptions()
+                .position(new LatLng(40.0521755, -76.3194044))
+                .title("Alumni Sports & Fitness Center")
+                .snippet("Pool, gym, indoor track")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+
+        // Center camera on Lombardo to start
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                new LatLng(40.0513665, -76.3196468), 16f));
     }
 
     @Override protected void onResume() { super.onResume(); mapView.onResume(); }
@@ -49,6 +93,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override protected void onDestroy() { super.onDestroy(); mapView.onDestroy(); }
     @Override public void onLowMemory() { super.onLowMemory(); mapView.onLowMemory(); }
 }
+
 
 
 
