@@ -13,9 +13,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AdmissionsApp">
+        <activity
+            android:name=".ContactInfo"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDFEkmlETPPr_Ss6uupfyQKpMr3EYREoQU" />
+
         <activity
             android:name=".MapActivity"
             android:exported="false" />
