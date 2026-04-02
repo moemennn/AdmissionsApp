@@ -8,4 +8,5 @@
     <color name="buttonTextColor">#000000</color>
     <color name="subTextColor">#F6F6A5</color>
     <color name="promptTextColor">#E9DFC8</color>
+    <color name="radioButtonColor">#17F5A8</color>
 </resources>

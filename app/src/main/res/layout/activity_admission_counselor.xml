@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="8dp"
-            android:text="Are you an:"
+            android:text="Are you:"
             android:textColor="@color/subTextColor"
             android:textSize="36sp" />
 
@@ -36,9 +36,10 @@
             android:id="@+id/rbInternational"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="International student"
+            android:text="An International student"
             android:textColor="@color/subTextColor"
-            android:textSize="28sp" />
+            android:textSize="28sp"
+            app:buttonTint="@color/radioButtonColor"/>
 
         <RadioButton
             android:id="@+id/rbFromUS"
@@ -46,7 +47,8 @@
             android:layout_height="wrap_content"
             android:text="From the US"
             android:textColor="@color/subTextColor"
-            android:textSize="28sp" />
+            android:textSize="28sp"
+            app:buttonTint="@color/radioButtonColor"/>
 
     </RadioGroup>
 
