@@ -1,5 +1,7 @@
 package edu.fandm.mibrahi1.admissionsapp;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -12,32 +14,34 @@ public class SheetFetcher {
     private static final String SHEET_ID = "1gKC6h1FUn88JZbnggXAnBqJtY-dacVYxAzbzdoYLiuU";
 
     /**
-     * Represents a single row, containing only the requested columns.
-     * Access values by their original column index (e.g., row.get(3) for column D).
+     * Represents a single row from the sheet.
+     * Access values by column index (0 = A, 1 = B, 2 = C, etc.)
      */
     public static class SheetRow {
-        private final String[] allColumns;
+        private final String[] columns;
 
-        SheetRow(String[] allColumns) {
-            this.allColumns = allColumns;
+        SheetRow(String[] columns) {
+            this.columns = columns;
         }
 
-        /** Get value by original column index (0 = A, 1 = B, 3 = D, etc.) */
         public String get(int columnIndex) {
-            if (columnIndex < 0 || columnIndex >= allColumns.length) return "";
-            return allColumns[columnIndex];
+            if (columnIndex < 0 || columnIndex >= columns.length) return "";
+            return columns[columnIndex];
+        }
+
+        public int size() {
+            return columns.length;
         }
     }
 
     /**
-     * Fetches a specific tab from the Google Sheet and returns only the requested columns.
+     * Fetches all columns from a given sheet tab.
      *
      * @param tabName    The sheet tab name (e.g., "International by Country")
-     * @param columns    Column indices to extract (0 = A, 1 = B, 3 = D, etc.)
      * @param skipHeader Whether to skip the first row
-     * @return List of SheetRow, each queryable by original column index
+     * @return List of SheetRow, each containing all columns from that row
      */
-    public static List<SheetRow> fetch(String tabName, int[] columns, boolean skipHeader) {
+    public static List<SheetRow> fetch(String tabName, boolean skipHeader) {
         List<SheetRow> results = new ArrayList<>();
         try {
             String encodedTab = tabName.replace(" ", "%20");
@@ -61,25 +65,13 @@ public class SheetFetcher {
                 }
                 firstLine = false;
 
-                String[] rawColumns = parseCSVLine(line);
-
-                // Build a sparse array sized to the highest requested column
-                int maxIndex = 0;
-                for (int col : columns) maxIndex = Math.max(maxIndex, col);
-                String[] extracted = new String[maxIndex + 1];
-
-                for (int col : columns) {
-                    extracted[col] = (col < rawColumns.length)
-                            ? rawColumns[col].replace("\"", "").trim()
-                            : "";
-                }
-
-                results.add(new SheetRow(extracted));
+                String[] columns = parseCSVLine(line);
+                results.add(new SheetRow(columns));
             }
             reader.close();
 
         } catch (Exception e) {
-            android.util.Log.e("SheetFetcher", "Failed to fetch sheet: " + tabName, e);
+            Log.e("SheetFetcher", "Failed to fetch sheet: " + tabName, e);
         }
         return results;
     }
