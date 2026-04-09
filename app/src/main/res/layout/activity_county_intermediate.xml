@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/countyLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground"
+    tools:context=".CountyIntermediateActivity">
+
+    <!-- Info text -->
+    <TextView
+        android:id="@+id/tvMultipleCounselors"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="32dp"
+        android:text="This state has multiple admission counselors depending on your county. Please provide a bit more information below."
+        android:textColor="@color/subTextColor"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- County autocomplete -->
+    <AutoCompleteTextView
+        android:id="@+id/actvCounty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/border_background"
+        android:completionThreshold="1"
+        android:hint="Enter county"
+        android:inputType="text"
+        android:maxLines="1"
+        android:padding="16dp"
+        android:textColor="@color/mainTextColor"
+        android:textColorHint="@color/promptTextColor"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvMultipleCounselors" />
+
+    <!-- School exceptions nested layout -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/schoolExceptionsLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="32dp"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/actvCounty">
+
+        <TextView
+            android:id="@+id/tvSchoolExceptions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Some schools have exceptions and may have a different assigned counselor. Check here."
+            android:textColor="@color/subTextColor"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <AutoCompleteTextView
+            android:id="@+id/actvSchool"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/border_background"
+            android:completionThreshold="1"
+            android:hint="Enter school"
+            android:inputType="text"
+            android:maxLines="1"
+            android:padding="16dp"
+            android:textColor="@color/mainTextColor"
+            android:textColorHint="@color/promptTextColor"
+            android:textSize="28sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSchoolExceptions" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Submit Button -->
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="60dp"
+        android:backgroundTint="@color/buttonColor"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:text="Submit"
+        android:textColor="@color/buttonTextColor"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

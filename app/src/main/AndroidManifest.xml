@@ -14,9 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AdmissionsApp">
         <activity
+            android:name=".EmailDisplayActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CountyIntermediateActivity"
+            android:exported="false" />
+        <activity
             android:name=".ContactInfo"
             android:exported="false" />
-
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

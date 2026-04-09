@@ -11,12 +11,8 @@ import java.util.List;
 
 public class SheetFetcher {
 
-    private static final String SHEET_ID = "1gKC6h1FUn88JZbnggXAnBqJtY-dacVYxAzbzdoYLiuU";
+    static final String SHEET_ID = "1gKC6h1FUn88JZbnggXAnBqJtY-dacVYxAzbzdoYLiuU";
 
-    /**
-     * Represents a single row from the sheet.
-     * Access values by column index (0 = A, 1 = B, 2 = C, etc.)
-     */
     public static class SheetRow {
         private final String[] columns;
 
@@ -34,13 +30,6 @@ public class SheetFetcher {
         }
     }
 
-    /**
-     * Fetches all columns from a given sheet tab.
-     *
-     * @param tabName    The sheet tab name (e.g., "International by Country")
-     * @param skipHeader Whether to skip the first row
-     * @return List of SheetRow, each containing all columns from that row
-     */
     public static List<SheetRow> fetch(String tabName, boolean skipHeader) {
         List<SheetRow> results = new ArrayList<>();
         try {
@@ -59,14 +48,9 @@ public class SheetFetcher {
             String line;
             boolean firstLine = true;
             while ((line = reader.readLine()) != null) {
-                if (firstLine && skipHeader) {
-                    firstLine = false;
-                    continue;
-                }
+                if (firstLine && skipHeader) { firstLine = false; continue; }
                 firstLine = false;
-
-                String[] columns = parseCSVLine(line);
-                results.add(new SheetRow(columns));
+                results.add(new SheetRow(parseCSVLine(line)));
             }
             reader.close();
 
@@ -76,8 +60,7 @@ public class SheetFetcher {
         return results;
     }
 
-    /** Splits a CSV line, respecting quoted fields that may contain commas. */
-    private static String[] parseCSVLine(String line) {
+    static String[] parseCSVLine(String line) {
         List<String> tokens = new ArrayList<>();
         boolean inQuotes = false;
         StringBuilder current = new StringBuilder();
