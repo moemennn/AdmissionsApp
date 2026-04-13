@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class AdmissionCounselor extends AppCompatActivity
         implements TerritoryRepository.OnDataLoadedListener {
@@ -41,17 +42,18 @@ public class AdmissionCounselor extends AppCompatActivity
         rgStudentType = findViewById(R.id.rgStudentType);
         actvLocation  = findViewById(R.id.actvLocation);
         btnSubmit     = findViewById(R.id.btnSubmit);
-
+        //Initializing new array adaptors
         countryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, new ArrayList<>());
         stateAdapter   = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, new ArrayList<>());
 
+        //default to international option
         actvLocation.setAdapter(countryAdapter);
         actvLocation.setHint("Enter country");
         rgStudentType.check(R.id.rbInternational);
-
+        //fetching data from memory or google sheet
         repository = new TerritoryRepository(this, this);
         repository.fetchAll();
-
+        //toggling between international and US student
         rgStudentType.setOnCheckedChangeListener((group, checkedId) -> {
             actvLocation.setText("");
             if (checkedId == R.id.rbInternational) {
@@ -62,11 +64,12 @@ public class AdmissionCounselor extends AppCompatActivity
                 actvLocation.setAdapter(stateAdapter);
             }
         });
-
+        //Button logic
         btnSubmit.setOnClickListener(v -> handleSubmit());
     }
 
     private void handleSubmit() {
+        //gets the user input
         String input = actvLocation.getText().toString().trim();
 
         if (input.isEmpty()) {
@@ -74,59 +77,48 @@ public class AdmissionCounselor extends AppCompatActivity
             return;
         }
 
-        switch (input) {
-            case "New York":
-                NavigationHelper.startIntermediaryActivity(this, CountyIntermediateActivity.class, true, "New York");
-                return;
-            case "Pennsylvania":
-                NavigationHelper.startIntermediaryActivity(this, CountyIntermediateActivity.class, true, "Pennsylvania");
-                return;
-            case "New Jersey":
-                NavigationHelper.startIntermediaryActivity(this, CountyIntermediateActivity.class, false, "New Jersey");
-                return;
-            case "Virginia":
-                NavigationHelper.startIntermediaryActivity(this, CountyIntermediateActivity.class, false, "Virginia");
-                return;
+        Set<String> specialStates = Set.of("New York", "Pennsylvania");
+        boolean isSpecialState = specialStates.contains(input);
+        /*New York and Pennsylvania have special cases where some schools have different admission counselors.
+        //If the input is one of these cases, display the part that asks for the school.
+        Otherwise, make that section invisible*/
+        if (isSpecialState) {
+            NavigationHelper.startIntermediaryActivity(this, CountyIntermediateActivity.class,
+                    true, input);
+        } else {
+            // Directly look up and navigate for other countries/states
+            TerritoryResult result = repository.lookupTerritory(input);
+            NavigationHelper.navigateWithResult(this, result, input);
         }
-        TerritoryResult result = repository.lookupTerritory(input);
-        navigateWithResult(result, input);
-    }
-    private void navigateWithResult(TerritoryResult result, String input) {
-        if (result == null) {
-            Toast.makeText(this, "No counselor found for \"" + input + "\".", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (result.counselorInfo == null) {
-            Toast.makeText(this, "No contact information found for " + result.counselorName + ".", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        String profileLink = result.counselorInfo.profileLink;
-        if (profileLink == null || profileLink.isEmpty() || profileLink.equalsIgnoreCase("N/A")) {
-            NavigationHelper.startEmailDisplayActivity(this, EmailDisplayActivity.class,
-                    result.counselorName, result.counselorInfo.email);
-            return;
-        }
-        NavigationHelper.startActivityWithURL(this, WebPage.class, profileLink);
     }
 
     @Override
+    //Updates the UI when the corresponding data loads
     public void onTabLoaded(String tabName, List<String> autocompleteItems) {
+        // Create an adapter for whichever tab is loaded
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, autocompleteItems);
+
         if (tabName.equals("International by Country")) {
-            countryAdapter = new ArrayAdapter<>(this,
-                    android.R.layout.simple_dropdown_item_1line, autocompleteItems);
+            //saves the ArrayAdaptor for reference
+            countryAdapter = adapter;
             if (rgStudentType.getCheckedRadioButtonId() == R.id.rbInternational) {
-                actvLocation.setAdapter(countryAdapter);
+                actvLocation.setAdapter(adapter);
             }
         } else if (tabName.equals("Territory By State")) {
-            stateAdapter = new ArrayAdapter<>(this,
-                    android.R.layout.simple_dropdown_item_1line, autocompleteItems);
+            //saves the ArrayAdaptor for reference
+            stateAdapter = adapter;
+            //We need this inside the if-else blocks to ensure the options don't display the wrong information.
+            //It wouldn't look good if the international option displays the US states
             if (rgStudentType.getCheckedRadioButtonId() == R.id.rbFromUS) {
-                actvLocation.setAdapter(stateAdapter);
+                actvLocation.setAdapter(adapter);
             }
         }
     }
     @Override
     public void onAllTabsLoaded() {
-        // Could hide a loading spinner here if you add one
+        // Logic for when all tabs are loaded. Some apps need to run this logic. This one doesn't, but
+        //I'll include it here for future use if someone wants to add a loading bar in the activity.
+        //When done, make the loading bar invisible
     }
 }

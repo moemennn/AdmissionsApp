@@ -1,7 +1,6 @@
 package edu.fandm.mibrahi1.admissionsapp;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
@@ -30,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button bookVisit = (Button) findViewById(R.id.btnBookVisit);
         bookVisit.setOnClickListener(v -> {
-            NavigationHelper.startActivityWithURL(this, WebPage.class, "https://www.fandm.edu/visit/");
+            NavigationHelper.startWebPageActivity(this, WebPage.class, "https://www.fandm.edu/visit/");
         });
 
         Button meetCounselor = (Button) findViewById(R.id.btnMeetCounselor);

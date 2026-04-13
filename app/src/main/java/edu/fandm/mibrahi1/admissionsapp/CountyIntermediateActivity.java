@@ -64,11 +64,12 @@ public class CountyIntermediateActivity extends AppCompatActivity implements Ter
             Toast.makeText(this, "Please enter a county or school.", Toast.LENGTH_SHORT).show();
             return;
         }
-
+        //Order of priority: School (if provided), then county
         if (!schoolInput.isEmpty()) {
             TerritoryResult schoolResult = repository.lookupTerritory(schoolInput);
             if (schoolResult != null) {
-                navigateWithResult(schoolResult, schoolInput);
+                //Pull up the profile page according to the school result
+                NavigationHelper.navigateWithResult(this, schoolResult, schoolInput);
                 return;
             }
 //            Toast.makeText(this, "No match for school \"" + schoolInput + "\", trying county...", Toast.LENGTH_SHORT).show();
@@ -80,33 +81,20 @@ public class CountyIntermediateActivity extends AppCompatActivity implements Ter
         }
 
         TerritoryResult countyResult = repository.lookupTerritory(countyInput);
-        navigateWithResult(countyResult, countyInput);
+        //If school result is empty, then pull up the profile page according to the county
+        NavigationHelper.navigateWithResult(this, countyResult, countyInput);
     }
-    private void navigateWithResult(TerritoryResult result, String input) {
-        if (result == null) {
-            Toast.makeText(this, "No counselor found for \"" + input + "\".", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
-        if (result.counselorInfo == null) {
-            Toast.makeText(this, "No contact information found for " + result.counselorName + ".", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String profileLink = result.counselorInfo.profileLink;
-        if (profileLink == null || profileLink.isEmpty() || profileLink.equalsIgnoreCase("N/A")) {
-            NavigationHelper.startEmailDisplayActivity(this, EmailDisplayActivity.class, result.counselorName, result.counselorInfo.email);
-            return;
-        }
-
-        NavigationHelper.startActivityWithURL(this, WebPage.class, profileLink);
-    }
     @Override
     public void onTabLoaded(String tabName, List<String> autocompleteItems) {
         // Nothing needed here — adapters are set in onAllTabsLoaded to guarantee
         // all maps are fully populated first
     }
     @Override
+    /**
+     * As stated above in onTabLoaded, we only set the adaptors once all the information is loaded.
+     * This is because by the time this CountyIntermediateActivity starts, all the information has already been loaded
+     */
     public void onAllTabsLoaded() {
         repository.getCountiesForState(state, counties -> {
             actvCounty.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, counties));
