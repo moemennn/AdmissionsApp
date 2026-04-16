@@ -1,9 +1,12 @@
 package edu.fandm.mibrahi1.admissionsapp;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,12 +30,14 @@ public class ScrollableBuildingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrollable_building);
 
-        // --- Retrieve intent data ---
+        // Retrieve intent data
         int[] imageIds = getIntent().getIntArrayExtra("imageIds");
         String buildingDescription = getIntent().getStringExtra("buildingDescription");
         String videoId = getIntent().getStringExtra("videoId");
+        double lat = getIntent().getDoubleExtra("lat", 0);
+        double lng = getIntent().getDoubleExtra("lng", 0);
 
-        // --- Image Gallery ---
+        // Image Gallery
         List<Integer> images = new ArrayList<>();
         if (imageIds != null) {
             for (int id : imageIds) {
@@ -44,7 +49,8 @@ public class ScrollableBuildingActivity extends AppCompatActivity {
         viewPager.setAdapter(new ImageGalleryAdapter(images));
 
         RecyclerView dotsIndicator = findViewById(R.id.dotsIndicator);
-        dotsIndicator.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        dotsIndicator.setLayoutManager(
+                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         DotsAdapter dotsAdapter = new DotsAdapter(images.size());
         dotsIndicator.setAdapter(dotsAdapter);
 
@@ -55,27 +61,41 @@ public class ScrollableBuildingActivity extends AppCompatActivity {
             }
         });
 
-        // --- Building Description ---
+        // Building Description
         TextView tvBuildingDescription = findViewById(R.id.tvBuildingDescription);
         if (buildingDescription != null) {
             tvBuildingDescription.setText(buildingDescription);
         }
 
-        // --- YouTube Player ---
-        YouTubePlayerView youTubePlayerView = findViewById(R.id.youtubePlayerView);
-        getLifecycle().addObserver(youTubePlayerView);
+        // Get Directions Button
+        Button btnDirections = findViewById(R.id.btnDirections);
+        if (lat != 0 && lng != 0) {
+            btnDirections.setVisibility(View.VISIBLE);
+            btnDirections.setOnClickListener(v -> {
+                Uri uri = Uri.parse("google.navigation:q=" + lat + "," + lng + "&mode=w");
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
+            });
+        }
 
-        youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
-            @Override
-            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                if (videoId != null) {
+        // YouTube Player — only show if video ID exists
+        YouTubePlayerView youTubePlayerView = findViewById(R.id.youtubePlayerView);
+        if (videoId != null && !videoId.isEmpty()) {
+            youTubePlayerView.setVisibility(View.VISIBLE);
+            getLifecycle().addObserver(youTubePlayerView);
+            youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+                @Override
+                public void onReady(@NonNull YouTubePlayer youTubePlayer) {
                     youTubePlayer.cueVideo(videoId, 0);
                 }
-            }
-        });
+            });
+        } else {
+            youTubePlayerView.setVisibility(View.GONE);
+        }
     }
 
-    // --- Image Gallery Adapter ---
+    // Image Gallery Adapter
     static class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapter.ImageViewHolder> {
         private final List<Integer> images;
 
@@ -109,7 +129,7 @@ public class ScrollableBuildingActivity extends AppCompatActivity {
         }
     }
 
-    // --- Dots Adapter ---
+    // Dots Adapter
     static class DotsAdapter extends RecyclerView.Adapter<DotsAdapter.DotViewHolder> {
         private final int count;
         private int selectedPosition = 0;

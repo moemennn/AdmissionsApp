@@ -22,7 +22,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Orange Section: Image Gallery with dot indicators -->
+            <!-- Image Gallery with dot indicators -->
             <FrameLayout
                 android:id="@+id/imageGalleryContainer"
                 android:layout_width="match_parent"
@@ -48,7 +48,7 @@
 
             </FrameLayout>
 
-            <!-- Green Section: Building description text -->
+            <!-- Building description text -->
             <TextView
                 android:id="@+id/tvBuildingDescription"
                 android:layout_width="match_parent"
@@ -61,12 +61,24 @@
                 android:textSize="16sp"
                 android:minHeight="200dp" />
 
-            <!-- Red Section: YouTube Player -->
+            <!-- Get Directions Button -->
+            <Button
+                android:id="@+id/btnDirections"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="#003865"
+                android:text="Get Directions"
+                android:textColor="#FFFFFF"
+                android:visibility="gone" />
+
+            <!-- YouTube Player — hidden by default, shown only if video ID exists -->
             <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
                 android:id="@+id/youtubePlayerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:visibility="gone" />
 
         </LinearLayout>
     </ScrollView>
