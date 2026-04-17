@@ -5,93 +5,196 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/appBackground"
+    android:background="@color/lancaster_limestone"
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/tvAppName"
+        android:id="@+id/tvWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="Welcome to"
+        android:textColor="@color/old_main_stone"
+        android:textSize="16sp"
+        android:fontFamily="@font/inter_regular"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="DipGuide logo"
+        android:src="@drawable/dipguide_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvWelcome" />
+
+    <TextView
+        android:id="@+id/tvSubtitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
+        android:fontFamily="@font/inter_regular"
         android:gravity="center"
-        android:padding="24dp"
-        android:text="DipGuide"
-        android:textColor="@color/mainTextColor"
-        android:textSize="42sp"
-        app:layout_constraintBottom_toTopOf="@id/btnStartTour"
+        android:lineSpacingExtra="4sp"
+        android:text="Explore Franklin &amp; Marshall through a simple, guided campus experience."
+        android:textColor="@color/old_main_stone"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread" />
+        app:layout_constraintTop_toBottomOf="@id/logo" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnStartTour"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/inter_medium"
         android:text="Start Tour"
-        android:textSize="22sp"
-        android:paddingTop="14dp"
-        android:paddingBottom="14dp"
-        android:backgroundTint="@color/buttonColor"
-        android:textColor="@color/buttonTextColor"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="60dp"
-        app:layout_constraintTop_toBottomOf="@id/tvAppName"
-        app:layout_constraintBottom_toTopOf="@id/btnBookVisit"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:backgroundTint="@color/true_blue"
+        app:cornerRadius="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/tvSubtitle" />
 
-    <Button
-        android:id="@+id/btnBookVisit"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardBookVisit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Book a visit"
-        android:textSize="22sp"
-        android:paddingTop="14dp"
-        android:paddingBottom="14dp"
-        android:backgroundTint="@color/buttonColor"
-        android:textColor="@color/buttonTextColor"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnStartTour"
-        app:layout_constraintBottom_toTopOf="@id/btnMeetCounselor"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:strokeColor="@color/lancaster_limestone"
+        app:strokeWidth="1dp">
 
-    <Button
-        android:id="@+id/btnMeetCounselor"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_medium"
+                android:text="Book a Visit"
+                android:textColor="@color/heritage_navy"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:fontFamily="@font/inter_regular"
+                android:text="Schedule an in-person campus visit."
+                android:textColor="@color/old_main_stone"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardCounselor"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Meet your admission counselor"
-        android:textSize="22sp"
-        android:paddingTop="14dp"
-        android:paddingBottom="14dp"
-        android:backgroundTint="@color/buttonColor"
-        android:textColor="@color/buttonTextColor"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="60dp"
-        app:layout_constraintTop_toBottomOf="@id/btnBookVisit"
-        app:layout_constraintBottom_toTopOf="@id/btnContactInfo"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/cardBookVisit"
+        app:strokeColor="@color/lancaster_limestone"
+        app:strokeWidth="1dp">
 
-    <Button
-        android:id="@+id/btnContactInfo"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_medium"
+                android:text="Meet Your Admission Counselor"
+                android:textColor="@color/heritage_navy"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:fontFamily="@font/inter_regular"
+                android:text="Connect with the counselor for your region."
+                android:textColor="@color/old_main_stone"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardContact"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Contact Info"
-        android:textSize="22sp"
-        android:paddingTop="14dp"
-        android:paddingBottom="14dp"
-        android:backgroundTint="@color/buttonColor"
-        android:textColor="@color/buttonTextColor"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="60dp"
-        app:layout_constraintTop_toBottomOf="@id/btnMeetCounselor"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/cardCounselor"
+        app:strokeColor="@color/lancaster_limestone"
+        app:strokeWidth="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_medium"
+                android:text="Contact Info"
+                android:textColor="@color/heritage_navy"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:fontFamily="@font/inter_regular"
+                android:text="Phone, email, and office details."
+                android:textColor="@color/old_main_stone"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

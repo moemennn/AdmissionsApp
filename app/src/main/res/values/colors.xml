@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="buttonColor">#C8972B</color>
-    <color name="appBackground">#003DA5</color>
-    <color name="mainTextColor">#F0F4FA</color>
-    <color name="buttonTextColor">#000000</color>
-    <color name="subTextColor">#F6F6A5</color>
-    <color name="promptTextColor">#E9DFC8</color>
-    <color name="radioButtonColor">#17F5A8</color>
+    <!-- Primary -->
+    <color name="true_blue">#003DA5</color>
+
+    <!-- Secondary -->
+    <color name="heritage_navy">#001E42</color>
+    <color name="lux_blue">#0098DD</color>
+    <color name="old_main_stone">#97999B</color>
+    <color name="lancaster_limestone">#F3F1E6</color>
+
+    <!-- Utility -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 </resources>

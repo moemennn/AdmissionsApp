@@ -5,105 +5,173 @@
     android:id="@+id/countyLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/appBackground"
+    android:background="@color/lancaster_limestone"
     tools:context=".CountyIntermediateActivity">
 
-    <!-- Info text -->
+    <ImageView
+        android:id="@+id/logoSmall"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="DipGuide logo"
+        android:src="@drawable/dipguide_logo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <TextView
-        android:id="@+id/tvMultipleCounselors"
+        android:id="@+id/tvTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="32dp"
-        android:text="This state has multiple admission counselors depending on your county. Please provide a bit more information below."
-        android:textColor="@color/subTextColor"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/inter_bold"
+        android:gravity="center"
+        android:text="Narrow down your counselor"
+        android:textColor="@color/heritage_navy"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/logoSmall" />
 
-    <!-- County autocomplete -->
-    <AutoCompleteTextView
-        android:id="@+id/actvCounty"
+    <TextView
+        android:id="@+id/tvSubtitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
-        android:background="@drawable/border_background"
-        android:completionThreshold="1"
-        android:hint="Enter county"
-        android:inputType="text"
-        android:maxLines="1"
-        android:padding="16dp"
-        android:textColor="@color/mainTextColor"
-        android:textColorHint="@color/promptTextColor"
-        android:textSize="28sp"
+        android:fontFamily="@font/inter_regular"
+        android:gravity="center"
+        android:text="Your state has multiple counselors. Add a bit more detail so we can match you correctly."
+        android:textColor="@color/old_main_stone"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvMultipleCounselors" />
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
-    <!-- School exceptions nested layout -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/schoolExceptionsLayout"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/formCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="32dp"
-        android:padding="16dp"
+        android:layout_margin="24dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="3dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/actvCounty">
+        app:layout_constraintTop_toBottomOf="@id/tvSubtitle"
+        app:strokeColor="@color/lancaster_limestone"
+        app:strokeWidth="1dp">
 
-        <TextView
-            android:id="@+id/tvSchoolExceptions"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Some schools have exceptions and may have a different assigned counselor. Check here."
-            android:textColor="@color/subTextColor"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:orientation="vertical"
+            android:padding="24dp">
 
-        <AutoCompleteTextView
-            android:id="@+id/actvSchool"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/border_background"
-            android:completionThreshold="1"
-            android:hint="Enter school"
-            android:inputType="text"
-            android:maxLines="1"
-            android:padding="16dp"
-            android:textColor="@color/mainTextColor"
-            android:textColorHint="@color/promptTextColor"
-            android:textSize="28sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvSchoolExceptions" />
+            <TextView
+                android:id="@+id/tvCountyLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_medium"
+                android:text="Your county"
+                android:textColor="@color/heritage_navy"
+                android:textSize="18sp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilCounty"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Enter county"
+                app:boxCornerRadiusBottomEnd="18dp"
+                app:boxCornerRadiusBottomStart="18dp"
+                app:boxCornerRadiusTopEnd="18dp"
+                app:boxCornerRadiusTopStart="18dp"
+                app:boxStrokeColor="@color/old_main_stone">
 
-    <!-- Submit Button -->
-    <Button
-        android:id="@+id/btnSubmit"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="60dp"
-        android:backgroundTint="@color/buttonColor"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:text="Submit"
-        android:textColor="@color/buttonTextColor"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+                <AutoCompleteTextView
+                    android:id="@+id/actvCounty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:completionThreshold="1"
+                    android:fontFamily="@font/inter_regular"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textColor="@color/heritage_navy"
+                    android:textSize="16sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/schoolSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvOptional"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="Optional"
+                    android:textColor="@color/old_main_stone"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvSchoolLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="High school (if applicable)"
+                    android:textColor="@color/heritage_navy"
+                    android:textSize="18sp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilSchool"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="Enter school"
+                    app:boxCornerRadiusBottomEnd="18dp"
+                    app:boxCornerRadiusBottomStart="18dp"
+                    app:boxCornerRadiusTopEnd="18dp"
+                    app:boxCornerRadiusTopStart="18dp"
+                    app:boxStrokeColor="@color/old_main_stone">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/actvSchool"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:completionThreshold="1"
+                        android:fontFamily="@font/inter_regular"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textColor="@color/heritage_navy"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="28dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="Continue"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                app:backgroundTint="@color/true_blue"
+                app:cornerRadius="18dp" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

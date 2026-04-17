@@ -5,81 +5,135 @@
     android:id="@+id/emailLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/appBackground"
+    android:background="@color/lancaster_limestone"
     tools:context=".EmailDisplayActivity">
 
-    <TextView
-        android:id="@+id/tvCounselorFound"
-        android:layout_width="0dp"
+    <ImageView
+        android:id="@+id/logoSmall"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="32dp"
-        android:text="Your counselor has been found, but no profile link is available."
-        android:textColor="@color/subTextColor"
-        android:textSize="24sp"
+        android:layout_marginTop="24dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="DipGuide logo"
+        android:src="@drawable/dipguide_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvEmailPrompt"
+        android:id="@+id/tvTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:text="You can still reach out to your counselor via the email below, or click the provided button."
-        android:textColor="@color/subTextColor"
-        android:textSize="24sp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/inter_bold"
+        android:gravity="center"
+        android:text="Your counselor is ready"
+        android:textColor="@color/heritage_navy"
+        android:textSize="26sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvCounselorFound" />
+        app:layout_constraintTop_toBottomOf="@id/logoSmall" />
 
     <TextView
-        android:id="@+id/tvCounselorName"
+        android:id="@+id/tvSubtitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="32dp"
-        android:textColor="@color/mainTextColor"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        tools:text="Counselor Name"
+        android:fontFamily="@font/inter_regular"
+        android:gravity="center"
+        android:lineSpacingExtra="3sp"
+        android:text="We found your admission counselor. While a profile page is not available, you can still get in touch directly by email."
+        android:textColor="@color/old_main_stone"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvEmailPrompt" />
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
-    <TextView
-        android:id="@+id/tvCounselorEmail"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/counselorCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:textColor="@color/mainTextColor"
-        android:textSize="22sp"
-        tools:text="counselor@fandm.edu"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="24dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="3dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvCounselorName" />
+        app:layout_constraintTop_toBottomOf="@id/tvSubtitle"
+        app:strokeColor="@color/lancaster_limestone"
+        app:strokeWidth="1dp">
 
-    <Button
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/tvCounselorLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_medium"
+                android:text="Your admission counselor"
+                android:textColor="@color/old_main_stone"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvCounselorName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/inter_bold"
+                android:textColor="@color/heritage_navy"
+                android:textSize="24sp"
+                tools:text="Counselor Name" />
+
+            <TextView
+                android:id="@+id/tvEmailLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="Email"
+                android:textColor="@color/old_main_stone"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvCounselorEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:autoLink="email"
+                android:fontFamily="@font/inter_regular"
+                android:textColor="@color/true_blue"
+                android:textSize="18sp"
+                tools:text="counselor@fandm.edu" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnEmail"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="60dp"
-        android:backgroundTint="@color/buttonColor"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:text="Email"
-        android:textColor="@color/buttonTextColor"
-        android:textSize="22sp"
+        android:layout_height="56dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/inter_medium"
+        android:text="Email counselor"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        app:backgroundTint="@color/true_blue"
+        app:cornerRadius="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvCounselorEmail" />
+        app:layout_constraintTop_toBottomOf="@id/counselorCard" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

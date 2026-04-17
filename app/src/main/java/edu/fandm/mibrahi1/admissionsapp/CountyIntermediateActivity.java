@@ -4,15 +4,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +21,8 @@ public class CountyIntermediateActivity extends AppCompatActivity implements Ter
 
     private AutoCompleteTextView actvCounty;
     private AutoCompleteTextView actvSchool;
-    private ConstraintLayout schoolExceptionsLayout;
-    private Button btnSubmit;
+    private View schoolSection;
+    private MaterialButton btnSubmit;
     private TerritoryRepository repository;
     private String state;
     private boolean showSchools;
@@ -32,6 +32,7 @@ public class CountyIntermediateActivity extends AppCompatActivity implements Ter
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_county_intermediate);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.countyLayout), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -43,10 +44,10 @@ public class CountyIntermediateActivity extends AppCompatActivity implements Ter
 
         actvCounty = findViewById(R.id.actvCounty);
         actvSchool = findViewById(R.id.actvSchool);
-        schoolExceptionsLayout = findViewById(R.id.schoolExceptionsLayout);
+        schoolSection = findViewById(R.id.schoolSection);
         btnSubmit = findViewById(R.id.btnSubmit);
 
-        schoolExceptionsLayout.setVisibility(showSchools ? View.VISIBLE : View.GONE);
+        schoolSection.setVisibility(showSchools ? View.VISIBLE : View.GONE);
 
         actvCounty.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, new ArrayList<>()));
         actvSchool.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, new ArrayList<>()));
@@ -56,6 +57,7 @@ public class CountyIntermediateActivity extends AppCompatActivity implements Ter
 
         btnSubmit.setOnClickListener(v -> handleSubmit());
     }
+
     private void handleSubmit() {
         String schoolInput = showSchools ? actvSchool.getText().toString().trim() : "";
         String countyInput = actvCounty.getText().toString().trim();
@@ -64,6 +66,7 @@ public class CountyIntermediateActivity extends AppCompatActivity implements Ter
             Toast.makeText(this, "Please enter a county or school.", Toast.LENGTH_SHORT).show();
             return;
         }
+
         //Order of priority: School (if provided), then county
         if (!schoolInput.isEmpty()) {
             TerritoryResult schoolResult = repository.lookupTerritory(schoolInput);
@@ -90,6 +93,7 @@ public class CountyIntermediateActivity extends AppCompatActivity implements Ter
         // Nothing needed here — adapters are set in onAllTabsLoaded to guarantee
         // all maps are fully populated first
     }
+
     @Override
     /**
      * As stated above in onTabLoaded, we only set the adaptors once all the information is loaded.

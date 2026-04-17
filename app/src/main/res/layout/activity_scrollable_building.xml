@@ -5,12 +5,14 @@
     android:id="@+id/scrollableLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/lancaster_limestone"
     tools:context=".ScrollableBuildingActivity">
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,65 +22,156 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingStart="20dp"
+            android:paddingTop="24dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="32dp">
 
-            <!-- Image Gallery with dot indicators -->
-            <FrameLayout
-                android:id="@+id/imageGalleryContainer"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:background="#FF8C00">
+            <ImageView
+                android:id="@+id/logoSmall"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:adjustViewBounds="true"
+                android:contentDescription="DipGuide logo"
+                android:src="@drawable/dipguide_logo" />
 
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/viewPagerImages"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/dotsIndicator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:layout_marginBottom="8dp"
-                    android:background="#55000000"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="4dp" />
-
-            </FrameLayout>
-
-            <!-- Building description text -->
             <TextView
-                android:id="@+id/tvBuildingDescription"
+                android:id="@+id/tvPageTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:background="#00CC00"
-                android:padding="16dp"
-                android:text="Text about the building"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:minHeight="200dp" />
+                android:fontFamily="@font/inter_bold"
+                android:gravity="center"
+                android:text="Building Details"
+                android:textColor="@color/heritage_navy"
+                android:textSize="24sp" />
 
-            <!-- Get Directions Button -->
-            <Button
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/imageGalleryCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="3dp"
+                app:strokeColor="@color/lancaster_limestone"
+                app:strokeWidth="1dp">
+
+                <FrameLayout
+                    android:id="@+id/imageGalleryContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="260dp">
+
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/viewPagerImages"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/dotsIndicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginBottom="12dp"
+                        android:background="#66001E42"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="5dp" />
+
+                </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/descriptionCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="3dp"
+                app:strokeColor="@color/lancaster_limestone"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:id="@+id/tvDescriptionLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="About this location"
+                        android:textColor="@color/old_main_stone"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvBuildingDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/inter_regular"
+                        android:lineSpacingExtra="4sp"
+                        android:minHeight="140dp"
+                        android:text="Text about the building"
+                        android:textColor="@color/heritage_navy"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnDirections"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="#003865"
+                android:layout_height="56dp"
+                android:layout_marginTop="18dp"
+                android:fontFamily="@font/inter_medium"
                 android:text="Get Directions"
-                android:textColor="#FFFFFF"
-                android:visibility="gone" />
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:visibility="gone"
+                app:backgroundTint="@color/true_blue"
+                app:cornerRadius="18dp" />
 
-            <!-- YouTube Player — hidden by default, shown only if video ID exists -->
-            <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-                android:id="@+id/youtubePlayerView"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/videoCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:visibility="gone" />
+                android:layout_marginTop="18dp"
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="3dp"
+                app:strokeColor="@color/lancaster_limestone"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:id="@+id/tvVideoLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Video"
+                        android:textColor="@color/old_main_stone"
+                        android:textSize="14sp" />
+
+                    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+                        android:id="@+id/youtubePlayerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
     </ScrollView>
