@@ -92,7 +92,9 @@
                 android:fontFamily="@font/inter_bold"
                 android:textColor="@color/heritage_navy"
                 android:textSize="24sp"
-                tools:text="Counselor Name" />
+                tools:text="Counselor Name"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"/>
 
             <TextView
                 android:id="@+id/tvEmailLabel"
@@ -113,7 +115,9 @@
                 android:fontFamily="@font/inter_regular"
                 android:textColor="@color/true_blue"
                 android:textSize="18sp"
-                tools:text="counselor@fandm.edu" />
+                tools:text="counselor@fandm.edu"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"/>
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

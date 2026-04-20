@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lancaster_limestone"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:windowSoftInputMode="adjustPan">
 
     <ImageView
         android:id="@+id/logoSmall"
@@ -152,7 +153,9 @@
                     android:paddingTop="14dp"
                     android:paddingBottom="14dp"
                     android:textColor="@color/heritage_navy"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
