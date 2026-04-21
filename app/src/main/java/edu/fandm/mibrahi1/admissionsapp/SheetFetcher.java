@@ -21,6 +21,7 @@ public class SheetFetcher {
     // Sheet IDs — add new ones here as needed
     public static final String COUNSELOR_SHEET_ID = "1gKC6h1FUn88JZbnggXAnBqJtY-dacVYxAzbzdoYLiuU";
     public static final String BUILDINGS_SHEET_ID = "1bQsD0Tg53nysaTcxgg76cXx8dQcaZB3a0K0xt09jaBE";
+    public static final String TOURS_SHEET_ID = "1-vZMesdyRC5y524xv8KEMGLgQRJzA_DzwkC3ySimCpo";
 
     // Kept for backward compatibility with TerritoryRepository
     static final String SHEET_ID = COUNSELOR_SHEET_ID;

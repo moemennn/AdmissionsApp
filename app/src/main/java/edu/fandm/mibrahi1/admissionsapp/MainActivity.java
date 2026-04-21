@@ -30,6 +30,11 @@ public class MainActivity extends AppCompatActivity {
                 NavigationHelper.startActivity(this, MapActivity.class)
         );
 
+        MaterialCardView startTourCard = findViewById(R.id.cardStartTour);
+        startTourCard.setOnClickListener(v ->
+                NavigationHelper.startActivity(this, TourSelectionActivity.class)
+        );
+
         MaterialCardView bookVisit = findViewById(R.id.cardBookVisit);
         bookVisit.setOnClickListener(v ->
                 NavigationHelper.startWebPageActivity(this, WebPage.class, "https://www.fandm.edu/visit/")

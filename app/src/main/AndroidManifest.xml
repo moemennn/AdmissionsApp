@@ -14,13 +14,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AdmissionsApp">
         <activity
+            android:name=".TourStopsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TourSelectionActivity"
+            android:exported="false" />
+        <activity
             android:name=".EmailDisplayActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".CountyIntermediateActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ContactInfo"
             android:exported="false" />
@@ -35,14 +41,14 @@
         <activity
             android:name=".ScrollableBuildingActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".WebPage"
             android:exported="false" />
         <activity
             android:name=".AdmissionCounselor"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
