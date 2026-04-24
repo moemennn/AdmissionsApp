@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.bumptech.glide.Glide;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -23,59 +27,46 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import java.util.ArrayList;
 import java.util.List;
 
-// This Activity displays detailed information about a building
-// including images, description, directions, and a YouTube video
 public class ScrollableBuildingActivity extends AppCompatActivity {
+
+    private static final String STORAGE_BUILDINGS_FOLDER = "buildings/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Set the layout (UI) for this screen
         setContentView(R.layout.activity_scrollable_building);
 
-        // ================================
-        // 1. GET DATA PASSED FROM PREVIOUS SCREEN
-        // ================================
-
-        // These values were passed using an Intent
-        int[] imageIds = getIntent().getIntArrayExtra("imageIds");
+        String imageFileNames = getIntent().getStringExtra("imageFileNames");
         String buildingDescription = getIntent().getStringExtra("buildingDescription");
         String videoId = getIntent().getStringExtra("videoId");
         double lat = getIntent().getDoubleExtra("lat", 0);
         double lng = getIntent().getDoubleExtra("lng", 0);
 
-        // ================================
-        // 2. IMAGE GALLERY (SWIPEABLE IMAGES)
-        // ================================
+        List<String> imagePaths = new ArrayList<>();
 
-        // Convert array into a List (RecyclerView works better with Lists)
-        List<Integer> images = new ArrayList<>();
-        if (imageIds != null) {
-            for (int id : imageIds) {
-                images.add(id);
+        if (imageFileNames != null && !imageFileNames.trim().isEmpty()) {
+            String[] files = imageFileNames.split(",");
+
+            for (String file : files) {
+                String fileName = file.trim();
+
+                if (!fileName.isEmpty()) {
+                    imagePaths.add(STORAGE_BUILDINGS_FOLDER + fileName);
+                }
             }
         }
 
-        // ViewPager2 allows users to swipe between images
         ViewPager2 viewPager = findViewById(R.id.viewPagerImages);
-        viewPager.setAdapter(new ImageGalleryAdapter(images));
-
-        // ================================
-        // 3. DOT INDICATOR (SHOWS CURRENT IMAGE POSITION)
-        // ================================
+        viewPager.setAdapter(new ImageGalleryAdapter(imagePaths));
 
         RecyclerView dotsIndicator = findViewById(R.id.dotsIndicator);
-
-        // Horizontal layout for dots (left to right)
         dotsIndicator.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        );
 
-        // Create adapter with number of dots equal to number of images
-        DotsAdapter dotsAdapter = new DotsAdapter(images.size());
+        DotsAdapter dotsAdapter = new DotsAdapter(imagePaths.size());
         dotsIndicator.setAdapter(dotsAdapter);
 
-        // Update dots when user swipes images
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -83,112 +74,82 @@ public class ScrollableBuildingActivity extends AppCompatActivity {
             }
         });
 
-        // ================================
-        // 4. BUILDING DESCRIPTION TEXT
-        // ================================
-
         TextView tvBuildingDescription = findViewById(R.id.tvBuildingDescription);
-
-        // Only set text if it exists (avoid null errors)
         if (buildingDescription != null) {
             tvBuildingDescription.setText(buildingDescription);
         }
 
-        // ================================
-        // 5. "GET DIRECTIONS" BUTTON
-        // ================================
-
         Button btnDirections = findViewById(R.id.btnDirections);
-
-        // Only show button if valid coordinates exist
         if (lat != 0 && lng != 0) {
             btnDirections.setVisibility(View.VISIBLE);
-
-            // When clicked, open Google Maps navigation
             btnDirections.setOnClickListener(v -> {
                 Uri uri = Uri.parse("google.navigation:q=" + lat + "," + lng + "&mode=w");
-
-                // Create intent to open Google Maps
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
-
-                // Force it to use Google Maps app (if installed)
                 mapIntent.setPackage("com.google.android.apps.maps");
-
                 startActivity(mapIntent);
             });
         }
 
-        // ================================
-        // 6. YOUTUBE VIDEO PLAYER
-        // ================================
-
         YouTubePlayerView youTubePlayerView = findViewById(R.id.youtubePlayerView);
-
-        // Only show video if a video ID was provided
-        if (videoId != null && !videoId.isEmpty()) {
+        if (videoId != null && !videoId.trim().isEmpty()) {
             youTubePlayerView.setVisibility(View.VISIBLE);
-
-            // Connect player lifecycle to activity lifecycle
             getLifecycle().addObserver(youTubePlayerView);
 
-            // Load the video when player is ready
             youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
                 @Override
                 public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                    // cueVideo loads the video but does NOT autoplay
                     youTubePlayer.cueVideo(videoId, 0);
                 }
             });
         } else {
-            // Hide the player if no video exists
             youTubePlayerView.setVisibility(View.GONE);
         }
     }
 
-    // ================================
-    // IMAGE GALLERY ADAPTER
-    // Handles displaying images inside ViewPager2
-    // ================================
     static class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapter.ImageViewHolder> {
 
-        private final List<Integer> images;
+        private final List<String> imagePaths;
 
-        // Constructor receives list of image resource IDs
-        ImageGalleryAdapter(List<Integer> images) {
-            this.images = images;
+        ImageGalleryAdapter(List<String> imagePaths) {
+            this.imagePaths = imagePaths;
         }
 
         @NonNull
         @Override
         public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-            // Create a new ImageView for each item
             ImageView imageView = new ImageView(parent.getContext());
-
-            // Make image fill the entire screen space
             imageView.setLayoutParams(new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT));
-
-            // Crop image nicely to fill space
+                    ViewGroup.LayoutParams.MATCH_PARENT
+            ));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
             return new ImageViewHolder(imageView);
         }
 
         @Override
         public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
+            String path = imagePaths.get(position);
 
-            // Set the image for this position
-            holder.imageView.setImageResource(images.get(position));
+            StorageReference ref = FirebaseStorage.getInstance()
+                    .getReference()
+                    .child(path);
+
+            ref.getDownloadUrl()
+                    .addOnSuccessListener(uri -> {
+                        Glide.with(holder.imageView.getContext())
+                                .load(uri)
+                                .into(holder.imageView);
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("ScrollableBuilding", "Failed to load image: " + path, e);
+                    });
         }
 
         @Override
         public int getItemCount() {
-            return images.size();
+            return imagePaths.size();
         }
 
-        // ViewHolder holds the ImageView for reuse
         static class ImageViewHolder extends RecyclerView.ViewHolder {
             ImageView imageView;
 
@@ -199,25 +160,17 @@ public class ScrollableBuildingActivity extends AppCompatActivity {
         }
     }
 
-    // ================================
-    // DOTS ADAPTER
-    // Controls the small indicator dots under the images
-    // ================================
     static class DotsAdapter extends RecyclerView.Adapter<DotsAdapter.DotViewHolder> {
-
-        private final int count; // number of dots
-        private int selectedPosition = 0; // currently active dot
+        private final int count;
+        private int selectedPosition = 0;
 
         DotsAdapter(int count) {
             this.count = count;
         }
 
-        // Update which dot is selected
         public void setSelectedDot(int position) {
             int previous = selectedPosition;
             selectedPosition = position;
-
-            // Refresh only the changed dots
             notifyItemChanged(previous);
             notifyItemChanged(selectedPosition);
         }
@@ -225,18 +178,13 @@ public class ScrollableBuildingActivity extends AppCompatActivity {
         @NonNull
         @Override
         public DotViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-            // Inflate dot layout from XML
             View dot = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.dot_indicator, parent, false);
-
             return new DotViewHolder(dot);
         }
 
         @Override
         public void onBindViewHolder(@NonNull DotViewHolder holder, int position) {
-
-            // Highlight selected dot, dim others
             holder.dot.setAlpha(position == selectedPosition ? 1f : 0.4f);
         }
 
@@ -245,7 +193,6 @@ public class ScrollableBuildingActivity extends AppCompatActivity {
             return count;
         }
 
-        // Holds reference to each dot view
         static class DotViewHolder extends RecyclerView.ViewHolder {
             View dot;
 
