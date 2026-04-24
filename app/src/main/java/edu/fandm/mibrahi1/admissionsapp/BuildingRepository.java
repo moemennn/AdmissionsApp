@@ -99,7 +99,7 @@ public class BuildingRepository {
             String description = row.getString("Descriptions");
             String imageFileNames = row.getString("Images (ids, comma seperated)");
             String type = row.getString("Type");
-            String videoLink = row.getString("Youtube video link");
+            String videoId = parseYoutubeVideoId(row.getString("Youtube video link"));
 
             // Convert latitude/longitude from String to double
             double latitude = parseDouble(row.getString("latitude"));
@@ -116,7 +116,7 @@ public class BuildingRepository {
                     description,
                     imageFileNames,
                     type,
-                    videoLink,
+                    videoId,
                     latitude,
                     longitude
             );
@@ -138,5 +138,68 @@ public class BuildingRepository {
 
         // Convert the string to a double
         return Double.parseDouble(value.trim());
+    }
+    // Extracts a YouTube video ID from a full URL or returns the ID if already provided
+    private static String parseYoutubeVideoId(String input) {
+
+        if (input == null || input.trim().isEmpty()) {
+            return "";
+        }
+
+        String value = input.trim();
+
+        try {
+            // Case 1: Already just a video ID (typical 11-character YouTube ID)
+            if (!value.contains("http") && !value.contains("/")) {
+                return value;
+            }
+
+            // Case 2: https://www.youtube.com/watch?v=VIDEO_ID
+            if (value.contains("watch?v=")) {
+                int index = value.indexOf("watch?v=") + 8;
+                String id = value.substring(index);
+
+                // Remove extra parameters like &t=123
+                int ampIndex = id.indexOf("&");
+                if (ampIndex != -1) {
+                    id = id.substring(0, ampIndex);
+                }
+
+                return id;
+            }
+
+            // Case 3: https://youtu.be/VIDEO_ID
+            if (value.contains("youtu.be/")) {
+                int index = value.indexOf("youtu.be/") + 9;
+                String id = value.substring(index);
+
+                // Remove extra parameters if present
+                int qIndex = id.indexOf("?");
+                if (qIndex != -1) {
+                    id = id.substring(0, qIndex);
+                }
+
+                return id;
+            }
+
+            // Case 4: embed URL https://www.youtube.com/embed/VIDEO_ID
+            if (value.contains("/embed/")) {
+                int index = value.indexOf("/embed/") + 7;
+                String id = value.substring(index);
+
+                int qIndex = id.indexOf("?");
+                if (qIndex != -1) {
+                    id = id.substring(0, qIndex);
+                }
+
+                return id;
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to parse YouTube video ID: " + input, e);
+        }
+
+        // Fallback: return original trimmed value if nothing matched
+        return value;
     }
 }

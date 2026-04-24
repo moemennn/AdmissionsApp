@@ -35,21 +35,12 @@ public class NavigationHelper {
         context.startActivity(intent);
     }
 
-    public static void startScrollableBuildingActivity(Context context,
-                                                       String imageFileNames,
-                                                       String buildingDescription) {
-        Intent intent = new Intent(context, ScrollableBuildingActivity.class);
-        intent.putExtra("imageFileNames", imageFileNames);
-        intent.putExtra("buildingDescription", buildingDescription);
-        context.startActivity(intent);
-    }
-
-    public static void startBuildingActivityFromSheet(Context context,
-                                                      String description,
-                                                      String imageFileNames,
-                                                      double lat,
-                                                      double lng,
-                                                      String videoId) {
+    public static void startBuildingActivity(Context context,
+                                             String description,
+                                             String imageFileNames,
+                                             double lat,
+                                             double lng,
+                                             String videoId) {
         Intent intent = new Intent(context, ScrollableBuildingActivity.class);
         intent.putExtra("imageFileNames", imageFileNames);
         intent.putExtra("buildingDescription", description);

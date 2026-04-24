@@ -27,8 +27,13 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Activity responsible for displaying detailed building information,
+ * including an image gallery, description, map navigation, and optional video.
+ */
 public class ScrollableBuildingActivity extends AppCompatActivity {
 
+    // Base folder in Firebase Storage where building images are stored
     private static final String STORAGE_BUILDINGS_FOLDER = "buildings/";
 
     @Override
@@ -36,12 +41,18 @@ public class ScrollableBuildingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrollable_building);
 
+        // ----------------------------
+        // Retrieve data passed from previous activity
+        // ----------------------------
         String imageFileNames = getIntent().getStringExtra("imageFileNames");
         String buildingDescription = getIntent().getStringExtra("buildingDescription");
         String videoId = getIntent().getStringExtra("videoId");
         double lat = getIntent().getDoubleExtra("lat", 0);
         double lng = getIntent().getDoubleExtra("lng", 0);
 
+        // ----------------------------
+        // Convert comma-separated image names into full Firebase Storage paths
+        // ----------------------------
         List<String> imagePaths = new ArrayList<>();
 
         if (imageFileNames != null && !imageFileNames.trim().isEmpty()) {
@@ -50,15 +61,20 @@ public class ScrollableBuildingActivity extends AppCompatActivity {
             for (String file : files) {
                 String fileName = file.trim();
 
+                // Avoid adding empty entries caused by extra commas
                 if (!fileName.isEmpty()) {
                     imagePaths.add(STORAGE_BUILDINGS_FOLDER + fileName);
                 }
             }
         }
 
+        // ----------------------------
+        // Setup image carousel (ViewPager2)
+        // ----------------------------
         ViewPager2 viewPager = findViewById(R.id.viewPagerImages);
         viewPager.setAdapter(new ImageGalleryAdapter(imagePaths));
 
+        // Setup dot indicator below the image slider
         RecyclerView dotsIndicator = findViewById(R.id.dotsIndicator);
         dotsIndicator.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -67,6 +83,7 @@ public class ScrollableBuildingActivity extends AppCompatActivity {
         DotsAdapter dotsAdapter = new DotsAdapter(imagePaths.size());
         dotsIndicator.setAdapter(dotsAdapter);
 
+        // Sync dot indicator with current image page
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -74,15 +91,23 @@ public class ScrollableBuildingActivity extends AppCompatActivity {
             }
         });
 
+        // ----------------------------
+        // Display building description text
+        // ----------------------------
         TextView tvBuildingDescription = findViewById(R.id.tvBuildingDescription);
         if (buildingDescription != null) {
             tvBuildingDescription.setText(buildingDescription);
         }
 
+        // ----------------------------
+        // Setup Google Maps navigation button (if coordinates are valid)
+        // ----------------------------
         Button btnDirections = findViewById(R.id.btnDirections);
         if (lat != 0 && lng != 0) {
             btnDirections.setVisibility(View.VISIBLE);
+
             btnDirections.setOnClickListener(v -> {
+                // Launch Google Maps navigation intent
                 Uri uri = Uri.parse("google.navigation:q=" + lat + "," + lng + "&mode=w");
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
                 mapIntent.setPackage("com.google.android.apps.maps");
@@ -90,11 +115,18 @@ public class ScrollableBuildingActivity extends AppCompatActivity {
             });
         }
 
+        // ----------------------------
+        // Setup YouTube video player (if video exists)
+        // ----------------------------
         YouTubePlayerView youTubePlayerView = findViewById(R.id.youtubePlayerView);
+
         if (videoId != null && !videoId.trim().isEmpty()) {
             youTubePlayerView.setVisibility(View.VISIBLE);
+
+            // Attach lifecycle to prevent memory leaks
             getLifecycle().addObserver(youTubePlayerView);
 
+            // Load video in "cue" mode (prepares video without autoplay)
             youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
                 @Override
                 public void onReady(@NonNull YouTubePlayer youTubePlayer) {
@@ -102,10 +134,15 @@ public class ScrollableBuildingActivity extends AppCompatActivity {
                 }
             });
         } else {
+            // Hide player if no video is available for this building
             youTubePlayerView.setVisibility(View.GONE);
         }
     }
 
+    // =========================================================
+    // IMAGE CAROUSEL ADAPTER
+    // Handles loading images from Firebase Storage into ViewPager2
+    // =========================================================
     static class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapter.ImageViewHolder> {
 
         private final List<String> imagePaths;
@@ -117,12 +154,14 @@ public class ScrollableBuildingActivity extends AppCompatActivity {
         @NonNull
         @Override
         public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            // Create full-screen ImageView dynamically for each page
             ImageView imageView = new ImageView(parent.getContext());
             imageView.setLayoutParams(new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT
             ));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
             return new ImageViewHolder(imageView);
         }
 
@@ -130,12 +169,15 @@ public class ScrollableBuildingActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
             String path = imagePaths.get(position);
 
+            // Reference image in Firebase Storage
             StorageReference ref = FirebaseStorage.getInstance()
                     .getReference()
                     .child(path);
 
+            // Convert storage reference to downloadable URL
             ref.getDownloadUrl()
                     .addOnSuccessListener(uri -> {
+                        // Load image efficiently using Glide
                         Glide.with(holder.imageView.getContext())
                                 .load(uri)
                                 .into(holder.imageView);
@@ -160,7 +202,12 @@ public class ScrollableBuildingActivity extends AppCompatActivity {
         }
     }
 
+    // =========================================================
+    // DOT INDICATOR ADAPTER
+    // Visually shows which image in the carousel is active
+    // =========================================================
     static class DotsAdapter extends RecyclerView.Adapter<DotsAdapter.DotViewHolder> {
+
         private final int count;
         private int selectedPosition = 0;
 
@@ -168,9 +215,11 @@ public class ScrollableBuildingActivity extends AppCompatActivity {
             this.count = count;
         }
 
+        // Update selected dot and refresh only affected items
         public void setSelectedDot(int position) {
             int previous = selectedPosition;
             selectedPosition = position;
+
             notifyItemChanged(previous);
             notifyItemChanged(selectedPosition);
         }
@@ -185,6 +234,7 @@ public class ScrollableBuildingActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull DotViewHolder holder, int position) {
+            // Highlight active dot, dim inactive ones
             holder.dot.setAlpha(position == selectedPosition ? 1f : 0.4f);
         }
 
