@@ -23,6 +23,7 @@ import com.google.firebase.storage.StorageReference;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,10 @@ public class ScrollableBuildingActivity extends AppCompatActivity {
                     imagePaths.add(STORAGE_BUILDINGS_FOLDER + fileName);
                 }
             }
+        }
+
+        if (imagePaths.isEmpty()) {
+            imagePaths.add("ERROR_PLACEHOLDER");
         }
 
         // ----------------------------
@@ -169,21 +174,27 @@ public class ScrollableBuildingActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
             String path = imagePaths.get(position);
 
-            // Reference image in Firebase Storage
+            // 🔴 Handle no-image case
+            if (path.equals("ERROR_PLACEHOLDER")) {
+                holder.imageView.setImageResource(R.drawable.no_image_found);
+                return;
+            }
+
             StorageReference ref = FirebaseStorage.getInstance()
                     .getReference()
                     .child(path);
 
-            // Convert storage reference to downloadable URL
             ref.getDownloadUrl()
                     .addOnSuccessListener(uri -> {
-                        // Load image efficiently using Glide
                         Glide.with(holder.imageView.getContext())
                                 .load(uri)
+                                .placeholder(R.drawable.image_placeholder)
+                                .error(R.drawable.image_error)
+                                .transition(DrawableTransitionOptions.withCrossFade())
                                 .into(holder.imageView);
                     })
                     .addOnFailureListener(e -> {
-                        Log.e("ScrollableBuilding", "Failed to load image: " + path, e);
+                        holder.imageView.setImageResource(R.drawable.image_error);
                     });
         }
 
