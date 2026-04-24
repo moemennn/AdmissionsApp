@@ -39,90 +39,53 @@ public class TourStopsActivity extends AppCompatActivity {
     }
 
     private void loadTour(String tourName) {
-        new Thread(() -> {
-            selectedTour = TourRepository.getTourByName(tourName);
+        TourRepository.getTourByName(this, tourName, tour -> {
+            selectedTour = tour;
 
-            runOnUiThread(() -> {
-                if (selectedTour == null) {
-                    Toast.makeText(this, "Could not load this tour.", Toast.LENGTH_SHORT).show();
-                    finish();
-                    return;
-                }
-
-                tvTourTitle.setText(selectedTour.getName());
-
-                int stopCount = selectedTour.getStops().size();
-                String stopText = stopCount == 1 ? "1 stop" : stopCount + " stops";
-                tvTourSubtitle.setText(stopText);
-
-                List<String> stops = new ArrayList<>(selectedTour.getStops());
-
-                TourStopAdapter adapter = new TourStopAdapter(this, stops);
-                lvTourStops.setAdapter(adapter);
-
-                lvTourStops.setOnItemClickListener((parent, view, position, id) -> {
-                    String buildingName = stops.get(position);
-                    openBuildingFromSheet(buildingName);
-                });
-            });
-        }).start();
-    }
-
-    private void openBuildingFromSheet(String buildingName) {
-        new Thread(() -> {
-            List<SheetFetcher.SheetRow> rows = SheetFetcher.fetch(
-                    SheetFetcher.BUILDINGS_SHEET_ID,
-                    "Sheet1",
-                    true
-            );
-
-            SheetFetcher.SheetRow matchedRow = null;
-
-            for (SheetFetcher.SheetRow row : rows) {
-                String name = row.get(0).trim();
-                if (name.equalsIgnoreCase(buildingName.trim())) {
-                    matchedRow = row;
-                    break;
-                }
+            if (selectedTour == null) {
+                Toast.makeText(this, "Could not load this tour.", Toast.LENGTH_SHORT).show();
+                finish();
+                return;
             }
 
-            SheetFetcher.SheetRow finalMatchedRow = matchedRow;
+            tvTourTitle.setText(selectedTour.getName());
 
-            runOnUiThread(() -> {
-                if (finalMatchedRow == null) {
-                    Toast.makeText(
-                            this,
-                            "Could not find details for " + buildingName,
-                            Toast.LENGTH_SHORT
-                    ).show();
-                    return;
-                }
+            int stopCount = selectedTour.getStops().size();
+            String stopText = stopCount == 1 ? "1 stop" : stopCount + " stops";
+            tvTourSubtitle.setText(stopText);
 
-                try {
-                    String description = finalMatchedRow.get(4);
-                    String imageFileNames = finalMatchedRow.get(5);
-                    String videoId = finalMatchedRow.get(6);
+            List<String> stops = new ArrayList<>(selectedTour.getStops());
 
-                    double lat = Double.parseDouble(finalMatchedRow.get(2));
-                    double lng = Double.parseDouble(finalMatchedRow.get(3));
+            TourStopAdapter adapter = new TourStopAdapter(this, stops);
+            lvTourStops.setAdapter(adapter);
 
-                    NavigationHelper.startBuildingActivityFromSheet(
-                            this,
-                            description,
-                            imageFileNames,
-                            lat,
-                            lng,
-                            videoId
-                    );
-
-                } catch (Exception e) {
-                    Toast.makeText(
-                            this,
-                            "Error opening building details.",
-                            Toast.LENGTH_SHORT
-                    ).show();
-                }
+            lvTourStops.setOnItemClickListener((parent, view, position, id) -> {
+                String buildingName = stops.get(position);
+                openBuildingFromRepository(buildingName);
             });
-        }).start();
+        });
+    }
+
+
+    private void openBuildingFromRepository(String buildingName) {
+        BuildingRepository.getBuildingByName(this, buildingName, building -> {
+            if (building == null) {
+                Toast.makeText(
+                        this,
+                        "Could not find details for " + buildingName,
+                        Toast.LENGTH_SHORT
+                ).show();
+                return;
+            }
+
+            NavigationHelper.startBuildingActivityFromSheet(
+                    this,
+                    building.getDescription(),
+                    building.getImageFileNames(),
+                    building.getLatitude(),
+                    building.getLongitude(),
+                    building.getVideoLink()
+            );
+        });
     }
 }

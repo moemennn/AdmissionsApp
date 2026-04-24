@@ -1,177 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/admissionCounselorLayout"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lancaster_limestone"
-    tools:context=".MainActivity"
-    android:windowSoftInputMode="adjustPan">
+    android:fillViewport="true"
+    android:background="@color/lancaster_limestone">
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/admissionCounselorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/lancaster_limestone"
+        tools:context=".MainActivity"
+        android:windowSoftInputMode="adjustResize">
 
-    <ImageView
-        android:id="@+id/logoSmall"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:adjustViewBounds="true"
-        android:contentDescription="DipGuide logo"
-        android:src="@drawable/dipguide_logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:fontFamily="@font/inter_bold"
-        android:gravity="center"
-        android:text="Find your counselor"
-        android:textColor="@color/heritage_navy"
-        android:textSize="26sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/logoSmall" />
-
-    <TextView
-        android:id="@+id/tvSubtitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="32dp"
-        android:fontFamily="@font/inter_regular"
-        android:gravity="center"
-        android:lineSpacingExtra="3sp"
-        android:text="Answer two quick questions and we’ll connect you with the right admission counselor."
-        android:textColor="@color/old_main_stone"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/formCard"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="24dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="3dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSubtitle"
-        app:strokeColor="@color/lancaster_limestone"
-        app:strokeWidth="1dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/logoSmall"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="24dp">
+            android:layout_marginTop="24dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="DipGuide logo"
+            android:src="@drawable/dipguide_logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tvQuestion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter_medium"
-                android:text="Where are you applying from?"
-                android:textColor="@color/heritage_navy"
-                android:textSize="18sp" />
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="@font/inter_bold"
+            android:gravity="center"
+            android:text="Find your counselor"
+            android:textColor="@color/heritage_navy"
+            android:textSize="26sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/logoSmall" />
 
-            <RadioGroup
-                android:id="@+id/rgStudentType"
+        <TextView
+            android:id="@+id/tvSubtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="32dp"
+            android:fontFamily="@font/inter_regular"
+            android:gravity="center"
+            android:lineSpacingExtra="3sp"
+            android:text="Answer two quick questions and we’ll connect you with the right admission counselor."
+            android:textColor="@color/old_main_stone"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/formCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="24dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="3dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSubtitle"
+            app:strokeColor="@color/lancaster_limestone"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="24dp">
 
-                <RadioButton
-                    android:id="@+id/rbInternational"
+                <TextView
+                    android:id="@+id/tvQuestion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:buttonTint="@color/true_blue"
-                    android:fontFamily="@font/inter_regular"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:text="Outside the United States"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="Where are you applying from?"
                     android:textColor="@color/heritage_navy"
-                    android:textSize="16sp" />
+                    android:textSize="18sp" />
 
-                <RadioButton
-                    android:id="@+id/rbFromUS"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/true_blue"
-                    android:fontFamily="@font/inter_regular"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:text="Within the United States"
-                    android:textColor="@color/heritage_navy"
-                    android:textSize="16sp" />
-            </RadioGroup>
-
-            <TextView
-                android:id="@+id/tvLocationLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:fontFamily="@font/inter_medium"
-                android:text="Your location"
-                android:textColor="@color/heritage_navy"
-                android:textSize="18sp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilLocation"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="Enter country or state"
-                app:boxBackgroundColor="@color/white"
-                app:boxCornerRadiusBottomEnd="18dp"
-                app:boxCornerRadiusBottomStart="18dp"
-                app:boxCornerRadiusTopEnd="18dp"
-                app:boxCornerRadiusTopStart="18dp"
-                app:boxStrokeColor="@color/old_main_stone"
-                app:hintTextColor="@color/old_main_stone">
-
-                <AutoCompleteTextView
-                    android:id="@+id/actvLocation"
+                <RadioGroup
+                    android:id="@+id/rgStudentType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:completionThreshold="1"
-                    android:fontFamily="@font/inter_regular"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:paddingTop="14dp"
-                    android:paddingBottom="14dp"
+                    android:layout_marginTop="12dp"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/rbInternational"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/true_blue"
+                        android:fontFamily="@font/inter_regular"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:text="Outside the United States"
+                        android:textColor="@color/heritage_navy"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/rbFromUS"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/true_blue"
+                        android:fontFamily="@font/inter_regular"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:text="Within the United States"
+                        android:textColor="@color/heritage_navy"
+                        android:textSize="16sp" />
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/tvLocationLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="Your location"
                     android:textColor="@color/heritage_navy"
-                    android:textSize="16sp"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:textSize="18sp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSubmit"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="28dp"
-                android:fontFamily="@font/inter_medium"
-                android:text="Find my counselor"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="17sp"
-                app:backgroundTint="@color/true_blue"
-                app:cornerRadius="18dp" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilLocation"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="Enter country or state"
+                    app:boxBackgroundColor="@color/white"
+                    app:boxCornerRadiusBottomEnd="18dp"
+                    app:boxCornerRadiusBottomStart="18dp"
+                    app:boxCornerRadiusTopEnd="18dp"
+                    app:boxCornerRadiusTopStart="18dp"
+                    app:boxStrokeColor="@color/old_main_stone"
+                    app:hintTextColor="@color/old_main_stone">
 
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+                    <AutoCompleteTextView
+                        android:id="@+id/actvLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:completionThreshold="1"
+                        android:fontFamily="@font/inter_regular"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:paddingTop="14dp"
+                        android:paddingBottom="14dp"
+                        android:textColor="@color/heritage_navy"
+                        android:textSize="16sp"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSubmit"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="28dp"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="Find my counselor"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+                    app:backgroundTint="@color/true_blue"
+                    app:cornerRadius="18dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

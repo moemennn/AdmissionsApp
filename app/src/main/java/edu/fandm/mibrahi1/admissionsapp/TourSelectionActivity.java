@@ -47,44 +47,41 @@ public class TourSelectionActivity extends AppCompatActivity {
     }
 
     private void loadTours() {
-        new Thread(() -> {
-            List<Tour> fetchedTours = TourRepository.getTours();
+        TourRepository.getTours(this, fetchedTours -> {
+            tours.clear();
+            tours.addAll(fetchedTours);
 
-            runOnUiThread(() -> {
-                tours.clear();
-                tours.addAll(fetchedTours);
+            if (tours.isEmpty()) {
+                tvTourDescription.setText("No tours available right now.");
+                Toast.makeText(this, "Could not load tours.", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-                if (tours.isEmpty()) {
-                    tvTourDescription.setText("No tours available right now.");
-                    Toast.makeText(this, "Could not load tours.", Toast.LENGTH_SHORT).show();
-                    return;
+            List<String> tourNames = new ArrayList<>();
+
+            for (Tour tour : tours) {
+                tourNames.add(tour.getName());
+            }
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                    this,
+                    android.R.layout.simple_dropdown_item_1line,
+                    tourNames
+            );
+
+            autoCompleteTours.setAdapter(adapter);
+
+            autoCompleteTours.setOnItemClickListener((parent, view, position, id) -> {
+                String selectedName = parent.getItemAtPosition(position).toString();
+                selectedTour = findTourByName(selectedName);
+
+                if (selectedTour != null) {
+                    int stopCount = selectedTour.getStops().size();
+                    String stopText = stopCount == 1 ? " stop" : " stops";
+                    tvTourDescription.setText(stopCount + stopText + " in this tour.");
                 }
-
-                List<String> tourNames = new ArrayList<>();
-                for (Tour tour : tours) {
-                    tourNames.add(tour.getName());
-                }
-
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                        this,
-                        android.R.layout.simple_dropdown_item_1line,
-                        tourNames
-                );
-
-                autoCompleteTours.setAdapter(adapter);
-
-                autoCompleteTours.setOnItemClickListener((parent, view, position, id) -> {
-                    String selectedName = parent.getItemAtPosition(position).toString();
-                    selectedTour = findTourByName(selectedName);
-
-                    if (selectedTour != null) {
-                        int stopCount = selectedTour.getStops().size();
-                        String stopText = stopCount == 1 ? " stop" : " stops";
-                        tvTourDescription.setText(stopCount + stopText + " in this tour.");
-                    }
-                });
             });
-        }).start();
+        });
     }
 
     private Tour findTourByName(String name) {

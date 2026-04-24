@@ -1,53 +1,72 @@
 package edu.fandm.mibrahi1.admissionsapp;
 
+import android.content.Context;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class TourRepository {
 
-    // Replace "Sheet1" with your actual tab name if different
-    private static final String TAB_NAME = "Sheet1";
+    private static final String TAG = "TourRepository";
+    private static final String COLLECTION_NAME = "Tours";
 
-    public static List<Tour> getTours() {
-        List<SheetFetcher.SheetRow> rows =
-                SheetFetcher.fetch(SheetFetcher.TOURS_SHEET_ID, TAB_NAME, false);
+    public interface OnToursLoadedCallback {
+        void onToursLoaded(List<Tour> tours);
+    }
 
-        List<Tour> tours = new ArrayList<>();
+    public interface OnTourLoadedCallback {
+        void onTourLoaded(Tour tour);
+    }
 
-        if (rows.isEmpty()) {
-            return tours;
-        }
+    public static void getTours(Context context, OnToursLoadedCallback callback) {
+        FirebaseFetcher firebaseFetcher = new FirebaseFetcher(context);
 
-        // First row = headers = tour names
-        SheetFetcher.SheetRow headerRow = rows.get(0);
-        int columnCount = headerRow.size();
+        firebaseFetcher.fetchCollectionWithCache(COLLECTION_NAME, new FirebaseFetcher.OnCollectionLoadedListener() {
+            @Override
+            public void onSuccess(List<FirebaseFetcher.FirebaseRow> rows) {
+                List<Tour> tours = new ArrayList<>();
 
-        for (int col = 0; col < columnCount; col++) {
-            String tourName = headerRow.get(col).trim();
+                for (FirebaseFetcher.FirebaseRow row : rows) {
+                    String name = row.getString("name");
 
-            if (tourName.isEmpty()) continue;
+                    List<String> stops = new ArrayList<>();
+                    Object stopsObject = row.getData().get("stops");
 
-            List<String> stops = new ArrayList<>();
+                    if (stopsObject instanceof List<?>) {
+                        for (Object stop : (List<?>) stopsObject) {
+                            if (stop != null && !stop.toString().trim().isEmpty()) {
+                                stops.add(stop.toString().trim());
+                            }
+                        }
+                    }
 
-            for (int row = 1; row < rows.size(); row++) {
-                String stop = rows.get(row).get(col).trim();
-                if (!stop.isEmpty()) {
-                    stops.add(stop);
+                    if (!name.isEmpty()) {
+                        tours.add(new Tour(name, stops));
+                    }
+                }
+
+                callback.onToursLoaded(tours);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.e(TAG, "Failed to load tours", e);
+                callback.onToursLoaded(new ArrayList<>());
+            }
+        });
+    }
+
+    public static void getTourByName(Context context, String name, OnTourLoadedCallback callback) {
+        getTours(context, tours -> {
+            for (Tour tour : tours) {
+                if (tour.getName().equalsIgnoreCase(name)) {
+                    callback.onTourLoaded(tour);
+                    return;
                 }
             }
 
-            tours.add(new Tour(tourName, stops));
-        }
-
-        return tours;
-    }
-
-    public static Tour getTourByName(String name) {
-        for (Tour tour : getTours()) {
-            if (tour.getName().equalsIgnoreCase(name)) {
-                return tour;
-            }
-        }
-        return null;
+            callback.onTourLoaded(null);
+        });
     }
 }

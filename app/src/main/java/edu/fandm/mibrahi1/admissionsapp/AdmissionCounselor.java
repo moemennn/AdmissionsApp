@@ -50,6 +50,11 @@ public class AdmissionCounselor extends AppCompatActivity
         actvLocation.setAdapter(countryAdapter);
         actvLocation.setHint("Enter country");
         rgStudentType.check(R.id.rbInternational);
+
+        actvLocation.setDropDownAnchor(R.id.tilLocation);
+        actvLocation.post(()->{
+            actvLocation.setDropDownVerticalOffset(-actvLocation.getHeight());
+        });
         //fetching data from memory or google sheet
         repository = new TerritoryRepository(this, this);
         repository.fetchAll();
@@ -77,17 +82,22 @@ public class AdmissionCounselor extends AppCompatActivity
             return;
         }
 
-        Set<String> specialStates = Set.of("New York", "Pennsylvania");
+        Set<String> specialStates = Set.of("New York", "Pennsylvania", "New Jersey", "Virginia");
         boolean isSpecialState = specialStates.contains(input);
         /*New York and Pennsylvania have special cases where some schools have different admission counselors.
         //If the input is one of these cases, display the part that asks for the school.
         Otherwise, make that section invisible*/
         if (isSpecialState) {
+            boolean showSchools = input.equals("New York") || input.equals("Pennsylvania");
             NavigationHelper.startIntermediaryActivity(this, CountyIntermediateActivity.class,
-                    true, input);
+                    showSchools, input);
         } else {
             // Directly look up and navigate for other countries/states
             TerritoryResult result = repository.lookupTerritory(input);
+            if (result == null){
+                Toast.makeText(this, "No match for \"" + input + "\".", Toast.LENGTH_SHORT).show();
+                return;
+            }
             NavigationHelper.navigateWithResult(this, result, input);
         }
     }
