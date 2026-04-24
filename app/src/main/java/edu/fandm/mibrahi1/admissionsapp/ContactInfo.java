@@ -27,7 +27,6 @@ public class ContactInfo extends AppCompatActivity {
         Button btnEmail = findViewById(R.id.btnEmail);
         Button btnPhone = findViewById(R.id.btnPhone);
 
-
         // 📧 Email Admissions
         btnEmail.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_SENDTO);

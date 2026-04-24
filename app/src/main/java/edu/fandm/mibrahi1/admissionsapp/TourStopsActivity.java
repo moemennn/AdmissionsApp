@@ -78,7 +78,7 @@ public class TourStopsActivity extends AppCompatActivity {
                 return;
             }
 
-            NavigationHelper.startBuildingActivityFromSheet(
+            NavigationHelper.startBuildingActivity(
                     this,
                     building.getDescription(),
                     building.getImageFileNames(),

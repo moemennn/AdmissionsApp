@@ -71,7 +71,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             Building building = markerDataMap.get(buildingName);
 
             if (building != null) {
-                NavigationHelper.startBuildingActivityFromSheet(
+                NavigationHelper.startBuildingActivity(
                         this,
                         building.getDescription(),
                         building.getImageFileNames(),

@@ -56,24 +56,13 @@ public class NavigationHelper {
     }
 
     /**
-     * Starts the ScrollableBuildingActivity passing building images and description.
-     */
-    public static void startScrollableBuildingActivity(Context context, int[] imageIds,
-                                                       String buildingDescription) {
-        Intent intent = new Intent(context, ScrollableBuildingActivity.class);
-        intent.putExtra("imageIds", imageIds);
-        intent.putExtra("buildingDescription", buildingDescription);
-        context.startActivity(intent);
-    }
-
-    /**
      * Starts the ScrollableBuildingActivity using data from the Google Sheet.
      * Converts image filename strings into drawable resource IDs.
      * Also passes lat/lng for directions and videoId for future video support.
      */
-    public static void startBuildingActivityFromSheet(Context context, String description,
-                                                      String imageFileNames, double lat,
-                                                      double lng, String videoId) {
+    public static void startBuildingActivity(Context context, String description,
+                                             String imageFileNames, double lat,
+                                             double lng, String videoId) {
         String[] fileNames = imageFileNames.split(",");
         List<Integer> imageIdList = new ArrayList<>();
 

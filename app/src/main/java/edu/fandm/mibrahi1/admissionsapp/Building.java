@@ -1,5 +1,6 @@
 package edu.fandm.mibrahi1.admissionsapp;
 
+//Building class, represents the information of a single building
 public class Building {
 
     private final String name;
