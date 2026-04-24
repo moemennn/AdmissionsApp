@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "560416594663",
+    "project_id": "admissions-tour",
+    "storage_bucket": "admissions-tour.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:560416594663:android:2203c8417e5a3bef5e6042",
+        "android_client_info": {
+          "package_name": "edu.fandm.mibrahi1.admissionsapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJJIcDUKhjkZiQfAKpuFKOAVd0kuh37jU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

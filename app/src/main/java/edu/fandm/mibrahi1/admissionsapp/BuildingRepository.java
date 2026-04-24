@@ -196,9 +196,8 @@ public class BuildingRepository {
             }
 
         } catch (Exception e) {
-            Log.e(TAG, "Failed to parse YouTube video ID: " + input, e);
+            Log.e(TAG, "Failed to parse YouTube video ID", e);
         }
-
         // Fallback: return original trimmed value if nothing matched
         return value;
     }

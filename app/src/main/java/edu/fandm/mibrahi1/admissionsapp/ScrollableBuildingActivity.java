@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
@@ -120,26 +121,34 @@ public class ScrollableBuildingActivity extends AppCompatActivity {
             });
         }
 
-        // ----------------------------
-        // Setup YouTube video player (if video exists)
-        // ----------------------------
+        MaterialCardView videoCard = findViewById(R.id.videoCard);
         YouTubePlayerView youTubePlayerView = findViewById(R.id.youtubePlayerView);
 
-        if (videoId != null && !videoId.trim().isEmpty()) {
+
+        // ----------------------------
+        // Validate + show player
+        // ----------------------------
+        if (!videoId.isEmpty() && videoId.length() == 11) {
+
+            videoCard.setVisibility(View.VISIBLE);
             youTubePlayerView.setVisibility(View.VISIBLE);
 
-            // Attach lifecycle to prevent memory leaks
             getLifecycle().addObserver(youTubePlayerView);
 
-            // Load video in "cue" mode (prepares video without autoplay)
+            final String finalVideoId = videoId;
+
             youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
                 @Override
                 public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                    youTubePlayer.cueVideo(videoId, 0);
+                    youTubePlayer.cueVideo(finalVideoId, 0);
                 }
             });
+
         } else {
-            // Hide player if no video is available for this building
+
+            Log.w("ScrollableBuilding", "Invalid or missing YouTube videoId");
+
+            videoCard.setVisibility(View.GONE);
             youTubePlayerView.setVisibility(View.GONE);
         }
     }
