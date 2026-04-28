@@ -1,6 +1,17 @@
 package edu.fandm.mibrahi1.admissionsapp;
 
 //Building class, represents the information of a single building
+
+
+/**
+ * FILE SUMMARY:
+ * This is a "Data Model" (POJO). It defines the exact shape of a
+ * building object as it exists in our application logic.
+ * KEY CONCEPTS:
+ * - Encapsulation: Variables are private, access is via public getters.
+ * - Immutability: Variables are final, set only once in the constructor.
+ */
+
 public class Building {
 
     private final String name;
@@ -11,6 +22,7 @@ public class Building {
     private final double latitude;
     private final double longitude;
 
+    // CONSTRUCTOR: BuildingRepository uses this to build the object from Firebase data
     public Building(String name,
                     String description,
                     String imageFileNames,
@@ -27,6 +39,8 @@ public class Building {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
+    // GETTERS: Used by Activities to read properties for display
 
     public String getName() {
         return name;

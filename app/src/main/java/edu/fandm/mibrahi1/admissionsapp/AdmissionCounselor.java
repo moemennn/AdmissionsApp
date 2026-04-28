@@ -6,13 +6,11 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -20,47 +18,53 @@ import java.util.Set;
 public class AdmissionCounselor extends AppCompatActivity
         implements TerritoryRepository.OnDataLoadedListener {
 
+    // UI ELEMENTS: Dropdown, Toggle buttons, and Submit
     private AutoCompleteTextView actvLocation;
     private RadioGroup rgStudentType;
     private Button btnSubmit;
+
+    // ADAPTERS: The "Bridges" between our Java lists and the dropdown UI
     private ArrayAdapter<String> countryAdapter;
     private ArrayAdapter<String> stateAdapter;
 
+    // The data librarian
     private TerritoryRepository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Enable modern "Edge-to-Edge" UI (System bars are transparent)
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_admission_counselor);
+
+        // Adjust layout so the UI doesn't hide behind the camera notch or bottom navigation bar
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.admissionCounselorLayout), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
+        // FIND VIEWS: Connect Java variables to the XML layout
         rgStudentType = findViewById(R.id.rgStudentType);
         actvLocation  = findViewById(R.id.actvLocation);
         btnSubmit     = findViewById(R.id.btnSubmit);
-        //Initializing new array adaptors
+
+        // Initialize Adapters with empty lists (filled later via repository)
         countryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, new ArrayList<>());
         stateAdapter   = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, new ArrayList<>());
 
-        //default to international option
+        // DEFAULT STATE: App starts by assuming you are an International student
         actvLocation.setAdapter(countryAdapter);
         actvLocation.setHint("Enter country");
         rgStudentType.check(R.id.rbInternational);
 
-        actvLocation.setDropDownAnchor(R.id.tilLocation);
-        actvLocation.post(()->{
-            actvLocation.setDropDownVerticalOffset(-actvLocation.getHeight());
-        });
-        //fetching data from memory or google sheet
+        // Start the background download process
         repository = new TerritoryRepository(this, this);
         repository.fetchAll();
-        //toggling between international and US student
+
+        // TOGGLE LOGIC: Change the hint and the dropdown list based on the Radio Button clicked
         rgStudentType.setOnCheckedChangeListener((group, checkedId) -> {
-            actvLocation.setText("");
+            actvLocation.setText(""); // Clear current text when switching
             if (checkedId == R.id.rbInternational) {
                 actvLocation.setHint("Enter country");
                 actvLocation.setAdapter(countryAdapter);
@@ -69,7 +73,8 @@ public class AdmissionCounselor extends AppCompatActivity
                 actvLocation.setAdapter(stateAdapter);
             }
         });
-        //Button logic
+
+        // SUBMIT LOGIC
         btnSubmit.setOnClickListener(v -> handleSubmit());
     }
 
